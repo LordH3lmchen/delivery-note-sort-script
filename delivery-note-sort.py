@@ -40,6 +40,7 @@ p = Path('.')
 files = sorted(p.glob('*.jpg')) + sorted(p.glob('*.JPG'))
 for path in files:
     dnImg = cv2.imread(str(path), cv2.IMREAD_GRAYSCALE)
+    dnImg = cv2.resize( dnImg, (1600,2280) )
     print('===========\n' + str(path))
     dnNo = ''
     reading = pytesseract.image_to_string(dnImg[587:900, 0:1000], lang='deu')
