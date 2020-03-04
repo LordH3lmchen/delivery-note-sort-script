@@ -76,4 +76,5 @@ for path in files:
         filename = 'processed/'+dnNo+'-'+dateStr+'-'+customerNoStr+'-'+recipentStr+'-'+str(pageIndex)+'.png'
 
     print('moving to '+filename)
-    shutil.move(path, filename)
+    cv2.imwrite(filename, dnImg)
+    #shutil.move(path, filename)
