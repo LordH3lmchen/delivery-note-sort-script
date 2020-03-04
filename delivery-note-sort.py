@@ -37,7 +37,7 @@ if not os.path.isdir('processed'):
     os.mkdir('processed')
 
 p = Path('.')
-files = sorted(p.glob('*.jpg')) + sorted(p.glob('*.JPG'))
+files = sorted(p.glob('*.jpg')) + sorted(p.glob('*.JPG')) + sorted(p.glob('*.png')) + sorted(p.glob('*.PNG'))
 for path in files:
     dnImg = cv2.imread(str(path), cv2.IMREAD_GRAYSCALE)
     dnImg = cv2.resize( dnImg, (1600,2280) )
@@ -45,9 +45,10 @@ for path in files:
     dnNo = ''
     reading = pytesseract.image_to_string(dnImg[587:900, 0:1000], lang='deu')
     print(reading)
-    m = re.search(r'Lieferschein\W+([0-9]{7})', reading)
-    if m:
-        dnNo = m.group(1)
+    m_dn = re.search(r'Lieferschein\W+([0-9]{7})', reading)
+    
+    if m_dn:
+        dnNo = m_dn.group(1)
         print(dnNo)
     else:
         print("Dokument nicht erkannt!")
@@ -69,10 +70,10 @@ for path in files:
     recipentStr = reading.replace('\n', '-').replace(' ', '-')
     print(recipentStr)
     pageIndex = 0
-    filename = 'processed/'+dnNo+'-'+dateStr+'-'+customerNoStr+'-'+recipentStr+'-'+str(pageIndex)+'.jpg'
+    filename = 'processed/'+dnNo+'-'+dateStr+'-'+customerNoStr+'-'+recipentStr+'-'+str(pageIndex)+'.png'
     while os.path.exists(filename):
         pageIndex = pageIndex + 1
-        filename = 'processed/'+dnNo+'-'+dateStr+'-'+customerNoStr+'-'+recipentStr+'-'+str(pageIndex)+'.jpg'
+        filename = 'processed/'+dnNo+'-'+dateStr+'-'+customerNoStr+'-'+recipentStr+'-'+str(pageIndex)+'.png'
 
     print('moving to '+filename)
     shutil.move(path, filename)
